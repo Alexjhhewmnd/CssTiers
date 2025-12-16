@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSStiers - Creative Secondary School Rankings</title>
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo">CSSTIERS</div>
+        </div>
+        <div class="nav-center">
+            <a href="#" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="#" class="nav-link"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
+            <a href="#" class="nav-link"><i class="fa-brands fa-discord"></i> Community <i class="fa-solid fa-chevron-down text-xs"></i></a>
+            <a href="https://www.css.edu.hk/" target="_blank" class="nav-link"><i class="fa-solid fa-school"></i> About CSS</a>
+        </div>
+        <div class="nav-right">
+            <div class="search-container">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="player-search" placeholder="Search student..." autocomplete="off">
+                <div class="search-shortcut">/</div>
+                <div id="search-results" class="search-dropdown"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div class="category-tabs">
+            <div class="tab active" onclick="switchTab('Overall', this)">
+                <i class="fa-solid fa-trophy"></i> <span>Overall</span>
+            </div>
+            <div class="tab" onclick="switchTab('Vanilla', this)">
+                <i class="fa-solid fa-gem"></i> <span>Vanilla</span>
+            </div>
+            <div class="tab" onclick="switchTab('UHC', this)">
+                <i class="fa-solid fa-heart"></i> <span>UHC</span>
+            </div>
+            <div class="tab" onclick="switchTab('Pot', this)">
+                <i class="fa-solid fa-flask"></i> <span>Pot</span>
+            </div>
+            <div class="tab" onclick="switchTab('NethOP', this)">
+                <i class="fa-solid fa-fire"></i> <span>NethOP</span>
+            </div>
+            <div class="tab" onclick="switchTab('SMP', this)">
+                <i class="fa-solid fa-shield-halved"></i> <span>SMP</span>
+            </div>
+            
+            <div class="tab" onclick="switchTab('Sword', this)">
+                <img src="https://mctiers.com/tier_icons/sword.svg" class="tab-icon-img" alt="Sword"> <span>Sword</span>
+            </div>
+             <div class="tab" onclick="switchTab('Axe', this)">
+                <img src="https://mctiers.com/tier_icons/axe.svg" class="tab-icon-img" alt="Axe"> <span>Axe</span>
+            </div>
+             <div class="tab" onclick="switchTab('Mace', this)">
+                <img src="https://mctiers.com/tier_icons/mace.svg" class="tab-icon-img" alt="Mace"> <span>Mace</span>
+            </div>
+        </div>
+
+        <div class="info-banner">
+            <button class="info-btn" onclick="openInfoModal()"><i class="fa-solid fa-circle-info"></i> Information</button>
+            <div class="server-ip-box">
+                <span class="server-logo">CSS<br>EDU</span>
+                <div class="server-details">
+                    <span class="server-label">OFFICIAL SITE</span>
+                    <span class="server-address">css.edu.hk</span>
+                </div>
+                <button class="copy-btn"><i class="fa-regular fa-copy"></i></button>
+                <div class="discord-icon"><i class="fa-brands fa-discord"></i></div>
+            </div>
+        </div>
+
+        <div id="view-overall" class="view-section">
+            <div class="table-header">
+                <div class="col-rank">#</div>
+                <div class="col-player">STUDENT</div>
+                <div class="col-form">FORM</div>
+                <div class="col-tiers">TIER RESULTS</div>
+            </div>
+            <div id="leaderboard-list">
+                </div>
+        </div>
+
+        <div id="view-tierlist" class="view-section hidden">
+            <div class="tier-grid-container" id="tier-grid">
+                </div>
+        </div>
+
+    </div>
+
+    <div id="profile-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-body">
+                <div class="modal-avatar-section">
+                    <img id="modal-skin" src="" alt="Skin">
+                </div>
+                <div class="modal-info-section">
+                    <h2 id="modal-username">Username</h2>
+                    <div class="modal-title-badge">
+                        <i class="fa-solid fa-gem"></i> <span id="modal-rank-title">Title</span>
+                    </div>
+                    
+                    <div class="modal-meta-row">
+                        <div class="meta-item">
+                            <span class="meta-label">Form</span>
+                            <span id="modal-form-text" class="meta-value form-tag">F1</span>
+                        </div>
+                        
+                        <div class="meta-item">
+                            <span class="meta-label">Student ID</span>
+                            <span id="modal-student-id" class="meta-value" style="font-family: monospace; letter-spacing: 0.5px;">s000000</span>
+                        </div>
+                    </div>
+
+                    <div class="modal-rank-box">
+                        <div class="rank-position">
+                            <span class="rank-label">POSITION</span>
+                            <div class="rank-value-row">
+                                <span class="rank-big" id="modal-position">1.</span>
+                                <span class="rank-category">OVERALL</span>
+                            </div>
+                        </div>
+                        <div class="rank-points">
+                            <span id="modal-points">0 points</span>
+                        </div>
+                    </div>
+
+                    <div class="modal-tiers-list">
+                        <span class="tiers-label">COMPLETED TIERS</span>
+                        <div id="modal-tiers-container" class="tiers-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="info-modal" class="modal-overlay hidden">
+        <div class="modal-content info-content">
+            <button class="close-modal" onclick="closeInfoModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="info-header">How to obtain <span class="underline">Achievement Titles</span></h3>
+            
+            <div class="achievement-list">
+                <div class="achievement-item">
+                    <div class="ach-icon icon-grandmaster"><i class="fa-brands fa-sketch"></i></div>
+                    <div class="ach-text">
+                        <div class="ach-title text-grandmaster">Combat Grandmaster</div>
+                        <div class="ach-desc">Obtained 400+ total points.</div>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="ach-icon icon-master"><i class="fa-regular fa-gem"></i></div>
+                    <div class="ach-text">
+                        <div class="ach-title text-master">Combat Master</div>
+                        <div class="ach-desc">Obtained 250+ total points.</div>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="ach-icon icon-ace"><i class="fa-solid fa-layer-group"></i></div>
+                    <div class="ach-text">
+                        <div class="ach-title text-ace">Combat Ace</div>
+                        <div class="ach-desc">Obtained 100+ total points.</div>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="ach-icon icon-specialist"><i class="fa-solid fa-diamond"></i></div>
+                    <div class="ach-text">
+                        <div class="ach-title text-specialist">Combat Specialist</div>
+                        <div class="ach-desc">Obtained 50+ total points.</div>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="ach-icon icon-cadet"><i class="fa-regular fa-circle-dot"></i></div>
+                    <div class="ach-text">
+                        <div class="ach-title text-cadet">Combat Cadet</div>
+                        <div class="ach-desc">Obtained 20+ total points.</div>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="ach-icon icon-novice"><i class="fa-regular fa-circle"></i></div>
+                    <div class="ach-text">
+                        <div class="ach-title text-novice">Combat Novice</div>
+                        <div class="ach-desc">Obtained 10+ total points.</div>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="ach-icon icon-rookie"><i class="fa-solid fa-circle-notch"></i></div>
+                    <div class="ach-text">
+                        <div class="ach-title text-rookie">Rookie</div>
+                        <div class="ach-desc">Starting rank for players with less than 10 points.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
